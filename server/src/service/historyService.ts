@@ -1,4 +1,3 @@
-import fs from "fs";
 
 class City {
   name: string;
@@ -12,12 +11,8 @@ class City {
 // TODO: Complete the HistoryService class
 class HistoryService {
   // TODO: Define a read method that reads from the searchHistory.json file
-  private async read(): Promise<string> {
-    const response = await fs.readFile(
-      '../../db/searchHistory.json',
-      'utf-8', 
-      (err) => { err ? console.log(err) : console.log('Search History Read Successfully!') });
-    return response;
+  private async read(): Promise<City[]> {
+    const searchHistory = await fetch('../../db/db.json')
   }
   // TODO: Define a write method that writes the updated cities array to the searchHistory.json file
   private async write(cities: City[]) {
