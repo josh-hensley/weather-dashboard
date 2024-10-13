@@ -1,13 +1,14 @@
 import dotenv from 'dotenv';
+import { get } from 'http';
 dotenv.config();
 
-// TODO: Define an interface for the Coordinates object
+// interface for the Coordinates object
 interface Coordinates {
   lat: number;
   lon: number;
 }
 
-// TODO: Define a class for the Weather object
+// class for the Weather object
 class Weather {
   city: string;
   date: string;
@@ -38,52 +39,72 @@ class Weather {
 
 // TODO: Complete the WeatherService class
 class WeatherService {
-  baseURL: string | undefined = process.env.API_BASE_URL; 
-  API_KEY: string | undefined = process.env.API_KEY;
-  cityName: string;
+  baseURL?: string; 
+  apiKey?: string;
+  cityName: string; 
 
-  constructor (cityName: string) {
-    this.cityName = cityName;
+  constructor () {
+    this.baseURL = process.env.API_BASE_URL || '';
+    this.apiKey = process.env.API_KEY || '';
+    this.cityName = '';
   }
-  // TODO: Create fetchLocationData method
+  // fetchLocationData method
   private async fetchLocationData(query: string) {
-    const response = await fetch(`${this.baseURL}/data/2.5/forecast?q=${query}&appid=${this.API_KEY}`);
-    if (response.ok){
-      return response.json();
+    try {
+      const response = await fetch(query); 
+      const locationData = await response.json();
+      return locationData[0];
+    }
+    catch (err) {
+      console.log('Error: ', err);
+      return err;
     }
   }
-  // TODO: Create destructureLocationData method
-  private destructureLocationData(locationData: Coordinates): Coordinates {
-    const lat = locationData.lat;
-    const lon = locationData.lon;
-    return { lat: lat, lon: lon };
+  private destructureLocationData(locationData: any): Coordinates{
+     return { 
+      lat: locationData.lat,
+      lon: locationData.lon 
+    };
   }
-  // TODO: Create buildGeocodeQuery method
   private buildGeocodeQuery(): string {
-
+    return `${this.baseURL}/geo/1.0/direct?q=${this.cityName}&appid=${this.apiKey}`;
   }
-  // TODO: Create buildWeatherQuery method
   private buildWeatherQuery(coordinates: Coordinates): string {
-    return "";
+    return `${this.baseURL}/data/2.5/forecast?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${this.apiKey}`;
   }
-  // TODO: Create fetchAndDestructureLocationData method
-  private async fetchAndDestructureLocationData() {
-
+  private async fetchAndDestructureLocationData(): Promise<Coordinates> {
+    return await this.destructureLocationData(this.fetchLocationData(this.buildGeocodeQuery()));
   }
-  // TODO: Create fetchWeatherData method
   private async fetchWeatherData(coordinates: Coordinates) {
-
+    const response = await fetch(this.buildWeatherQuery(coordinates));
+    const weatherData = await response.json();
+    return weatherData.list;
   }
-  // TODO: Build parseCurrentWeather method
-  private parseCurrentWeather(response: any) {
-
+  private async fetchCurrentWeather(coordinates: Coordinates){
+    return await fetch(`${this.baseURL}/data/3.0/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${this.apiKey}`);
   }
-  // TODO: Complete buildForecastArray method
-  private buildForecastArray(currentWeather: Weather, weatherData: any[]) {
-    
+  private async parseCurrentWeather(response: any) {
+    return response.json();
   }
-  // TODO: Complete getWeatherForCity method
-  // async getWeatherForCity(city: string) {}
+  private buildForecastArray(_currentWeather: Weather, weatherData: any[]) {
+    let forecastArray: Weather[] = weatherData.map(i=>{
+      const forecast = new Weather(
+        this.cityName, 
+        i.dt, 
+        i.weather.icon, 
+        i.weather.description, 
+        i.main.temp, 
+        i.wind.speed, 
+        i.main.humidity
+      )
+      return forecast;
+    });
+    return forecastArray;
+  }
+  async getWeatherForCity(city: string) {
+    this.cityName = city;
+    this.buildForecastArray(await this.parseCurrentWeather(this.fetchCurrentWeather(await this.fetchAndDestructureLocationData())), await this.fetchWeatherData(await this.fetchAndDestructureLocationData()))
+  }
 }
 
 export default new WeatherService();
