@@ -2,5 +2,13 @@
 	{
 		"name": "Dallas",
 		"id": 0
+	},
+	{
+		"name": "Houston",
+		"id": 1
+	},
+	{
+		"name": "Orlando",
+		"id": 2
 	}
 ]
