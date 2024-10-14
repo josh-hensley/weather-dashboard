@@ -274,6 +274,7 @@ const handleDeleteHistoryClick = (event: any) => {
   event.stopPropagation();
   const cityID = JSON.parse(event.target.getAttribute('data-city')).id;
   deleteCityFromHistory(cityID).then(getAndRenderHistory);
+  location.reload();
 };
 
 /*
