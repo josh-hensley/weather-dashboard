@@ -80,13 +80,7 @@ class WeatherService {
     const weatherData = await response.json();
     return weatherData.list;
   }
-  private async fetchCurrentWeather(coordinates: Coordinates){
-    return await fetch(`${this.baseURL}/data/3.0/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${this.apiKey}`);
-  }
-  private async parseCurrentWeather(response: any) {
-    return response.json();
-  }
-  private buildForecastArray(_currentWeather: Weather, weatherData: any[]) {
+  private buildForecastArray(weatherData: any[]) {
     let forecastArray: Weather[] = weatherData.map(i=>{
       const forecast = new Weather(
         this.cityName, 
@@ -103,7 +97,8 @@ class WeatherService {
   }
   async getWeatherForCity(city: string) {
     this.cityName = city;
-    this.buildForecastArray(await this.parseCurrentWeather(this.fetchCurrentWeather(await this.fetchAndDestructureLocationData())), await this.fetchWeatherData(await this.fetchAndDestructureLocationData()))
+    const forecastArray = this.buildForecastArray(await this.fetchWeatherData(await this.fetchAndDestructureLocationData()));
+    return forecastArray;
   }
 }
 

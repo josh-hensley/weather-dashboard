@@ -13,23 +13,19 @@ class City {
   } 
 }
 
-// TODO: Complete the HistoryService class
 class HistoryService {
-  // read method that reads from the searchHistory.json file
   private async read() {
     return await fs.readFile('db/db.json', {
       flag: 'a+',
       encoding: 'utf-8'
     });
   }
-  // write method that writes the updated cities array to the searchHistory.json file
   private async write(cities: City[]) {
     return await fs.writeFile(
       'db/db.json',
       JSON.stringify(cities, null, '\t')
     );
   }
-  // TODO: Define a getCities method that reads the cities from the searchHistory.json file and returns them as an array of City objects
   async getCities(): Promise<City[]> {
     return await this.read().then((cities)=>{
       let parsedCities: City[];
@@ -42,7 +38,6 @@ class HistoryService {
       return parsedCities;
     });
   }
-  // TODO Define an addCity method that adds a city to the searchHistory.json file
   async addCity(city: string) {
     if (!city) {
       throw new Error('city cannot be blank');
