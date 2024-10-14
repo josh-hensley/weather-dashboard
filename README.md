@@ -4,26 +4,19 @@
 
 ## Description
 
-Describe your application
+A simple web app and back-end that uses OpenWeatherMaps API to display a 5-day forcast. 
 
 ## Table of Contents
 
-
-* [Installation](#Installation)
 * [Usage](#Usage)
 * [License](#License)
 * [Contributing](#Contributing)
-* [Tests](#Tests)
 * [Questions](#Questions)
- 
 
-## <a name="Installation"></a>Installation
-
-Explain how to install.
 
 ## <a name="Usage"></a>Usage
 
-Explain how to use.
+Use the search bar to select a US city or select from any in the search history.  Your search will be added and stored on the server.  You can also delete a city from the list by clicking the trash button next to the name.
 
 ## <a name="license"></a>License
 
@@ -32,10 +25,6 @@ Explain how to use.
 ## <a name="contributing"></a>Contributing
 
 If you wish to contribute, please follow these [guidelines](https://www.contributor-covenant.org/version/2/1/code_of_conduct/).
-
-## <a name="tests"></a>Tests
-
-Tests go in here.
 
 ## <a name="questions"></a>Questions
 
