@@ -4,7 +4,7 @@
 
 ## Description
 
-A simple web app and back-end that uses OpenWeatherMaps API to display a 5-day forcast. 
+A simple [web app](https://weather-dashboard-bz1y.onrender.com/) and back-end that uses OpenWeatherMaps API to display a 5-day forcast. 
 
 ## Table of Contents
 
@@ -15,6 +15,8 @@ A simple web app and back-end that uses OpenWeatherMaps API to display a 5-day f
 
 
 ## <a name="Usage"></a>Usage
+
+
 
 Use the search bar to select a US city or select from any in the search history.  Your search will be added and stored on the server.  You can also delete a city from the list by clicking the trash button next to the name.
 
